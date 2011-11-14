@@ -135,8 +135,12 @@ echo "\n\n ->insertAsParentOf \n";
 // $wrappers[4]->moveAsLastChildOf($wrappers[1]);
 // printTree($nsm);
 
-echo "\n\n ->moveAsLastChildOf \n";
-$wrappers[4]->moveAsPrevSiblingOf($wrappers[2]);
+// echo "\n\n ->moveAsPrevSiblingOf \n";
+// $wrappers[4]->moveAsPrevSiblingOf($wrappers[2]);
+// printTree($nsm);
+
+echo "\n\n ->moveAsNextSiblingOf \n";
+$wrappers[4]->moveAsNextSiblingOf($wrappers[2]);
 printTree($nsm);
 
 

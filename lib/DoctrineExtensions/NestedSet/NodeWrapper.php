@@ -937,6 +937,7 @@ class NodeWrapper implements Node
 			else
 			{
 				$this->updateNode($node->getRightValue() + 1);
+				$this->updateDeep( $node->getDeepValue()-$this->getDeepValue() );
 			}
 
 			$em->flush();
