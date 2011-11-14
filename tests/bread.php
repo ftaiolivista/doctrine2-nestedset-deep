@@ -101,32 +101,36 @@ $em->flush();
 printTree($nsm);
 
 echo "\n\n ->insertAsParentOf \n";
-// echo $qb->getQuery()->getSql();
-// print_r($qb->getQuery()->getParameters());
-$newWrapper = $nsm->wrapNode(new NodeMock(6, '1.3', 0, 0, 0, 1));
-$newWrapper->insertAsParentOf($wrappers[4]);
-printTree($nsm);
+//// echo $qb->getQuery()->getSql();
+//// print_r($qb->getQuery()->getParameters());
+// $newWrapper = $nsm->wrapNode(new NodeMock(6, '1.3', 0, 0, 0, 1));
+// $newWrapper->insertAsParentOf($wrappers[4]);
+// printTree($nsm);
 
-echo "\n\n ->insertAsPrevSiblingOf \n";
-$newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)', null, null, 1, 0), $nsm);
-$newNode->insertAsPrevSiblingOf($wrappers[3]);
-printTree($nsm);
+// echo "\n\n ->insertAsPrevSiblingOf \n";
+// $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)', null, null, 1, 0), $nsm);
+// $newNode->insertAsPrevSiblingOf($wrappers[3]);
+// printTree($nsm);
 
-echo "\n\n ->insertAsPrevSiblingOf \n";
-$newNode = new NodeWrapper(new NodeMock(21, '1.1.1(-.5)', null, null, 1, 0), $nsm);
-$newNode->insertAsNextSiblingOf($wrappers[3]);
-printTree($nsm);
+// echo "\n\n ->insertAsPrevSiblingOf \n";
+// $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(-.5)', null, null, 1, 0), $nsm);
+// $newNode->insertAsNextSiblingOf($wrappers[3]);
+// printTree($nsm);
 
-echo "\n\n ->insertAsFirstChildOf \n";
-$newNode = new NodeWrapper(new NodeMock(21, '1.1.0', null, null, 1, 0), $nsm);
-$newNode->insertAsFirstChildOf($wrappers[1]);
-printTree($nsm);
+// echo "\n\n ->insertAsFirstChildOf \n";
+// $newNode = new NodeWrapper(new NodeMock(21, '1.1.0', null, null, 1, 0), $nsm);
+// $newNode->insertAsFirstChildOf($wrappers[1]);
+// printTree($nsm);
 
-echo "\n\n ->insertAsLastChildOf \n";
-$newNode = new NodeWrapper(new NodeMock(21, '1.1.3', null, null, 1, 0), $nsm);
-$newNode->insertAsLastChildOf($wrappers[1]);
-printTree($nsm);
+// echo "\n\n ->insertAsLastChildOf \n";
+// $newNode = new NodeWrapper(new NodeMock(21, '1.1.3', null, null, 1, 0), $nsm);
+// $newNode->insertAsLastChildOf($wrappers[1]);
+// printTree($nsm);
 
-echo "\n\n ->moveAsFirstChildOf \n";
-$wrappers[4]->moveAsFirstChildOf($wrappers[2]);
+// echo "\n\n ->moveAsFirstChildOf \n";
+// $wrappers[4]->moveAsFirstChildOf($wrappers[2]);
+// printTree($nsm);
+
+echo "\n\n ->moveAsLastChildOf \n";
+$wrappers[4]->moveAsLastChildOf($wrappers[1]);
 printTree($nsm);

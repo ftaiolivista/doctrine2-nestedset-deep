@@ -803,8 +803,7 @@ class NodeWrapperTest extends DatabaseTest
         $this->assertEquals(2, $this->wrappers2[4]->getLeftValue(), '->moveAsFirstChildOf() updates old tree next node\'s left value');
         $this->assertEquals(3, $this->wrappers2[4]->getRightValue(), '->moveAsFirstChildOf() updates old tree next node\'s right value');
         $this->assertEquals(4, $this->wrappers2[2]->getLeftValue(), '->moveAsFirstChildOf() updates descendant node\'s left value');
-        $this->assertEquals(5, $this->wrappers2[2]->getRightValue(), '->moveAsFirstChildOf() updates descendant node\'s right value');
-        $this->assertEquals(1, $this->wrappers2[2]->getRootValue(), '->moveAsFirstChildOf() updates descendant node\'s root value');
+        $this->assertEquals(5, $this->wrappers2[2]->getRightValue(), '->moveAsFirstChildOf() updates descendant node\'s right value');        
     }
 
 
@@ -820,6 +819,8 @@ class NodeWrapperTest extends DatabaseTest
         $this->assertEquals(8, $this->wrappers[4]->getRightValue(), '->moveAsLastChildOf() updates moved node\'s right value');
         $this->assertEquals(2, $this->wrappers[1]->getLeftValue(), '->moveAsLastChildOf() updates parent node\'s left value');
         $this->assertEquals(9, $this->wrappers[1]->getRightValue(), '->moveAsLastChildOf() updates parent node\'s right value');
+        $this->assertEquals(9, $this->wrappers[1]->getRightValue(), '->moveAsLastChildOf() updates parent node\'s branch deep value');
+        $this->assertEquals($this->wrappers[1]->getDeepValue()+1, $this->wrappers[4]->getDeepValue(), '->moveAsLastChildOf() updates moved node\'s  brench deeps');
     }
 
 
