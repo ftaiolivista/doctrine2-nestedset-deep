@@ -200,7 +200,7 @@ class NodeWrapper implements Node
 
             if($depth>1){
             	$qb->andWhere("$alias.".$this->getDeepFieldName()." > :deep1")
-            	->setParameter('deep1', $this->getDeepValue()+1);
+            	->setParameter('deep1', $this->getDeepValue());
             	$qb->andWhere("$alias.".$this->getDeepFieldName()." <= :deep2")
             	->setParameter('deep2', $this->getDeepValue()+$depth);
             }
