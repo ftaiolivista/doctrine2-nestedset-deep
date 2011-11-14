@@ -679,6 +679,7 @@ class NodeWrapperTest extends DatabaseTest
         $this->assertEquals(3, $this->wrappers[4]->getRightValue(), '->moveAsPrevSiblingOf() updates moved node\'s right value');
         $this->assertEquals(4, $this->wrappers[1]->getLeftValue(), '->moveAsPrevSiblingOf() updates next node\'s left value');
         $this->assertEquals(9, $this->wrappers[1]->getRightValue(), '->moveAsPrevSiblingOf() updates next node\'s right value');
+        $this->assertEquals($this->wrappers[4]->getDeepValue(), $this->wrappers[1]->getDeepValue(), '->moveAsPrevSiblingOf() updates next node\'s deep brach value');
     }
 
 
