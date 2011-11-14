@@ -57,7 +57,11 @@ abstract class DatabaseTest extends \PHPUnit_Framework_TestCase
         $config = new \Doctrine\ORM\Configuration();
         $config->setProxyDir(__DIR__ . '/../Proxies');
         $config->setProxyNamespace('DoctrineExtensions\NestedSet\Tests\Proxies');
-        $config->setMetadataDriverImpl(\Doctrine\ORM\Mapping\Driver\AnnotationDriver::create());
+        //$config->setMetadataDriverImpl(\Doctrine\ORM\Mapping\Driver\AnnotationDriver::create());
+        
+        $driverImpl = $config->newDefaultAnnotationDriver(__DIR__ . '/Mocks');
+        $config->setMetadataDriverImpl($driverImpl);        
+        
         $config->setAutoGenerateProxyClasses(true);
 
         return \Doctrine\ORM\EntityManager::create($conn, $config);

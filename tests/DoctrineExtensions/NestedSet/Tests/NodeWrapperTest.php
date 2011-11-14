@@ -21,7 +21,7 @@ namespace DoctrineExtensions\NestedSet\Tests;
 use DoctrineExtensions\NestedSet\Tests\Mocks\NodeMock;
 use DoctrineExtensions\NestedSet\Tests\Mocks\ManagerMock;
 use DoctrineExtensions\NestedSet\NodeWrapper;
-
+use Doctrine\ORM\Mapping as ORM;
 
 
 class NodeWrapperTest extends DatabaseTest
@@ -81,7 +81,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testConstructor()
     {
-        $this->assertType('DoctrineExtensions\NestedSet\NodeWrapper', new NodeWrapper($this->nodes[2], $this->nsm), '->__construct() works');
+        $this->assertInstanceOf('DoctrineExtensions\NestedSet\NodeWrapper', new NodeWrapper($this->nodes[2], $this->nsm), '->__construct() works');
     }
 
 
@@ -1017,7 +1017,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testToString()
     {
-        $this->assertType('string', $this->wrappers[0]->__toString(), '->__toString() returns a string');
+        $this->assertInternalType('string', $this->wrappers[0]->__toString(), '->__toString() returns a string');
     }
 
 

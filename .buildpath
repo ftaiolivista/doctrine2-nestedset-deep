@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="lib/DoctrineExtensions/NestedSet"/>
+	<buildpathentry kind="src" path="tests"/>
+	<buildpathentry kind="src" path="vendor/doctrine/bin"/>
+	<buildpathentry kind="src" path="vendor/doctrine/lib/Doctrine/ORM"/>
+	<buildpathentry kind="src" path="vendor/doctrine/lib/vendor/doctrine-common/lib/Doctrine/Common"/>
+	<buildpathentry kind="src" path="vendor/doctrine/lib/vendor/doctrine-common/tests"/>
+	<buildpathentry kind="src" path="vendor/doctrine/lib/vendor/doctrine-dbal/bin"/>
+	<buildpathentry kind="src" path="vendor/doctrine/lib/vendor/doctrine-dbal/lib/Doctrine/DBAL"/>
+	<buildpathentry kind="src" path="vendor/doctrine/lib/vendor/doctrine-dbal/tests/Doctrine/Tests"/>
+	<buildpathentry kind="src" path="vendor/doctrine/lib/vendor/Symfony/Component/Console"/>
+	<buildpathentry kind="src" path="vendor/doctrine/lib/vendor/Symfony/Component/Yaml"/>
+	<buildpathentry kind="src" path="vendor/doctrine/tests"/>
+	<buildpathentry kind="src" path="vendor/doctrine/tools/sandbox"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+</buildpath>
