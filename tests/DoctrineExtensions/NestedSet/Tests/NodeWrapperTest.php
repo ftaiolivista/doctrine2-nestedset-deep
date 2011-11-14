@@ -495,15 +495,17 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsParentOf()
     {
-        $newWrapper = $this->nsm->wrapNode(new NodeMock(6, '1.1', 0, 0, 0, 0));
+        $newWrapper = $this->nsm->wrapNode(new NodeMock(6, '1.3', 0, 0, 0, 1));
 
         $newWrapper->insertAsParentOf($this->wrappers[4]);
         $this->assertEquals(8, $newWrapper->getLeftValue(), '->insertAsParentOf() updates new node\'s left value');
         $this->assertEquals(11, $newWrapper->getRightValue(), '->insertAsParentOf() updates new node\'s right value');
-        $this->assertEquals(1, $newWrapper->getRootValue(), '->insertAsParentOf() updates new node\'s root value');
+        $this->assertEquals(1, $newWrapper->getDeepValue(), '->insertAsParentOf() updates new node\'s deep value');
+        $this->assertEquals(1, $newWrapper->getRootValue(), '->insertAsParentOf() updates new node\'s root value');        
         $this->assertEquals(9, $this->wrappers[4]->getLeftValue(), '->insertAsParentOf() updates next node\'s left value');
         $this->assertEquals(10, $this->wrappers[4]->getRightValue(), '->insertAsParentOf() updates next node\'s right value');
-        $this->assertEquals(12, $this->wrappers[0]->getRightValue(), '->insertAsParentOf() updates parent node\'s right value');
+        $this->assertEquals(10, $this->wrappers[4]->getRightValue(), '->insertAsParentOf() updates next node\'s right value');
+        $this->assertEquals(2, $this->wrappers[4]->getDeepValue(), '->insertAsParentOf() updates parent node\'s deep value');        
     }
 
 
@@ -552,6 +554,7 @@ class NodeWrapperTest extends DatabaseTest
         $newNode->insertAsPrevSiblingOf($this->wrappers[3]);
         $this->assertEquals(5, $newNode->getLeftValue(), '->insertAsPrevSiblingOf() updates new node\'s left value');
         $this->assertEquals(6, $newNode->getRightValue(), '->insertAsPrevSiblingOf() updates new node\'s right value');
+        $this->assertEquals(2, $newNode->getDeepValue(), '->insertAsPrevSiblingOf() updates new node\'s deep value');
         $this->assertEquals(3, $this->wrappers[2]->getLeftValue(), '->insertAsPrevSiblingOf updates prev node\'s left value');
         $this->assertEquals(4, $this->wrappers[2]->getRightValue(), '->insertAsPrevSiblingOf updates prev node\'s right value');
         $this->assertEquals(7, $this->wrappers[3]->getLeftValue(), '->insertAsPrevSiblingOf updates next node\'s left value');
@@ -577,11 +580,12 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsNextSiblingOf()
     {
-        $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)', null, null, 1, 0), $this->nsm);
+        $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(-.5)', null, null, 1, 0), $this->nsm);
 
         $newNode->insertAsNextSiblingOf($this->wrappers[2]);
         $this->assertEquals(5, $newNode->getLeftValue(), '->insertAsNextSiblingOf() updates new node\'s left value');
         $this->assertEquals(6, $newNode->getRightValue(), '->insertAsNextSiblingOf() updates new node\'s right value');
+        $this->assertEquals(2, $newNode->getDeepValue(), '->insertAsNextSiblingOf() updates new node\'s deep value');
         $this->assertEquals(3, $this->wrappers[2]->getLeftValue(), '->insertAsNextSiblingOf updates prev node\'s left value');
         $this->assertEquals(4, $this->wrappers[2]->getRightValue(), '->insertAsNextSiblingOf updates prev node\'s right value');
         $this->assertEquals(7, $this->wrappers[3]->getLeftValue(), '->insertAsNextSiblingOf updates next node\'s left value');
@@ -612,6 +616,7 @@ class NodeWrapperTest extends DatabaseTest
         $newNode->insertAsFirstChildOf($this->wrappers[1]);
         $this->assertEquals(3, $newNode->getLeftValue(), '->insertAsFirstChildOf() updates new node\'s left value');
         $this->assertEquals(4, $newNode->getRightValue(), '->insertAsFirstChildOf() updates new node\'s right value');
+        $this->assertEquals(2, $newNode->getDeepValue(), '->insertAsFirstChildOf() updates new node\'s deep value');
         $this->assertEquals(2, $this->wrappers[1]->getLeftValue(), '->insertAsFirstChildOf updates parent node\'s left value');
         $this->assertEquals(9, $this->wrappers[1]->getRightValue(), '->insertAsFirstChildOf updates parent node\'s right value');
         $this->assertEquals(5, $this->wrappers[2]->getLeftValue(), '->insertAsFirstChildOf updates first child node\'s left value');
@@ -643,6 +648,7 @@ class NodeWrapperTest extends DatabaseTest
         $newNode->insertAsLastChildOf($this->wrappers[1]);
         $this->assertEquals(7, $newNode->getLeftValue(), '->insertAsLastChildOf() updates new node\'s left value');
         $this->assertEquals(8, $newNode->getRightValue(), '->insertAsLastChildOf() updates new node\'s right value');
+        $this->assertEquals(2, $newNode->getDeepValue(), '->insertAsLastChildOf() updates new node\'s deep value');
         $this->assertEquals(2, $this->wrappers[1]->getLeftValue(), '->insertAsLastChildOf updates parent node\'s left value');
         $this->assertEquals(9, $this->wrappers[1]->getRightValue(), '->insertAsLastChildOf updates parent node\'s right value');
         $this->assertEquals(5, $this->wrappers[3]->getLeftValue(), '->insertAsLastChildOf doesn\'t update last child node\'s left value');

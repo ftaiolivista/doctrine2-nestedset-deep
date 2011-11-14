@@ -36,6 +36,10 @@ class ManagerTest extends DatabaseTest
     {
         $this->nsm = new ManagerMock($this->getEntityManager(), 'DoctrineExtensions\NestedSet\Tests\Mocks\NodeMock');
     }
+    
+    public function getNsm(){
+    	return $this->nsm;
+    }
 
     public function setUpDb($em=null)
     {
@@ -501,7 +505,8 @@ class ManagerTest extends DatabaseTest
     public function testUpdateValues()
     {
         // Make sure updateValues can be called with no registered wrappers
-        $this->nsm->updateValues(1, 0, 2, 1, 15);
+        //todo: sistemare
+    	$this->nsm->updateValues(1, 0, 2, 0, 1, 15);
 
         $wrappers = array(
             $this->nsm->wrapNode(new NodeMock(1, '1', 1, 6)),
@@ -509,7 +514,7 @@ class ManagerTest extends DatabaseTest
             $this->nsm->wrapNode(new NodeMock(3, '1.2', 4, 5)),
         );
 
-        $this->nsm->updateValues(1, 0, 2, 1, 15);
+        $this->nsm->updateValues(1, 0, 2, 0, 1, 15);
 
         $this->assertEquals(4, $wrappers[1]->getLeftValue(), '->updateValues() updates left value');
         $this->assertEquals(5, $wrappers[1]->getRightValue(), '->updateValues() updates right value');

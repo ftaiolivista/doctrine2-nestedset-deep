@@ -403,10 +403,11 @@ class Manager
      * @param int $first lowerbound (lft/rgt) of nodes to update
      * @param int $last upperbound (lft/rgt) of nodes to update, or 0
      * @param int $delta delta to add to lft/rgt values (can be negative)
+     * @param int $delta delta to add to deep value (can be negative)
      * @param mixed $oldRoot the old root value of entities to act upon
      * @param mixed $newRoot the new root value to set (or null to not change root)
      */
-    public function updateValues($first, $last, $delta, $oldRoot=null, $newRoot=null)
+    public function updateValues($first, $last, $delta, $deepDelta=0, $oldRoot=null, $newRoot=null)
     {
         if(!$this->wrappers)
         {
@@ -426,6 +427,12 @@ class Manager
                         $wrapper->setLeftValue($wrapper->getLeftValue() + $delta);
                         $wrapper->setRightValue($wrapper->getRightValue() + $delta);
                     }
+                    
+                    if($deepDelta !== 0)
+                    {
+                    	$wrapper->setDeepValue($wrapper->getDeepValue() + $deepDelta);                    	
+                    }
+                    
                     if($hasManyRoots && $newRoot !== null)
                     {
                         $wrapper->setRootValue($newRoot);

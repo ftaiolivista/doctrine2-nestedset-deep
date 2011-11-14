@@ -659,9 +659,11 @@ class NodeWrapper implements Node
         $em = $this->getManager()->getEntityManager();
         $lftField = $this->getLeftFieldName();
         $rgtField = $this->getRightFieldName();
+        $deepField = $this->getDeepFieldName();
 
         $newLft = $node->getLeftValue();
         $newRgt = $node->getRightValue() + 2;
+        $newDeep = $node->getDeepValue();
         $newRoot = $this->hasManyRoots() ? $node->getRootValue() : null;
 
         // beginTransaction
@@ -676,19 +678,21 @@ class NodeWrapper implements Node
                 ->update(get_class($this->getNode()), 'n')
                 ->set("n.$lftField", "n.$lftField + 1")
                 ->set("n.$rgtField", "n.$rgtField + 1")
+            	->set("n.$deepField", "n.$deepField + 1")
                 ->where("n.$lftField >= ?1")
                 ->setParameter(1, $newLft)
                 ->andWhere("n.$rgtField <= ?2")
-                ->setParameter(2, $newRgt);
+                ->setParameter(2, $newRgt);                        
             if($this->hasManyRoots())
             {
                 $qb->andWhere("n.".$this->getRootFieldName()." = ?3")
                     ->setParameter(3, $newRoot);
-            }
-            $qb->getQuery()->execute();
-            $this->getManager()->updateValues($newLft, $newRgt, 1, $newRoot);
+            }                        
+            $qb->getQuery()->execute();                        
+            
+            $this->getManager()->updateValues($newLft, $newRgt, 1, 1, $newRoot);
 
-            $this->insertNode($newLft, $newRgt, $newRoot);
+            $this->insertNode($newLft, $newRgt, $newDeep, $newRoot);
 
             $em->flush();
             $em->getConnection()->commit();
@@ -720,6 +724,7 @@ class NodeWrapper implements Node
         $em = $this->getManager()->getEntityManager();
         $newLeft = $node->getLeftValue();
         $newRight = $node->getLeftValue() + 1;
+        $newDeep = $node->getDeepValue();
         $newRoot = $this->hasManyRoots() ? $node->getRootValue() : null;
 
         // beginTransaction
@@ -727,7 +732,7 @@ class NodeWrapper implements Node
         try
         {
             $this->shiftRLRange($newLeft, 0, 2, $newRoot);
-            $this->insertNode($newLeft, $newRight, $newRoot);
+            $this->insertNode($newLeft, $newRight, $newDeep, $newRoot);
 
             $em->flush();
             $em->getConnection()->commit();
@@ -759,6 +764,7 @@ class NodeWrapper implements Node
         $em = $this->getManager()->getEntityManager();
         $newLeft = $node->getRightValue() + 1;
         $newRight = $node->getRightValue() + 2;
+        $newDeep = $node->getDeepValue();
         $newRoot = $this->hasManyRoots() ? $node->getRootValue() : null;
 
         // beginTransaction
@@ -766,7 +772,7 @@ class NodeWrapper implements Node
         try
         {
             $this->shiftRLRange($newLeft, 0, 2, $newRoot);
-            $this->insertNode($newLeft, $newRight, $newRoot);
+            $this->insertNode($newLeft, $newRight, $newDeep, $newRoot);
 
             $em->flush();
             $em->getConnection()->commit();
@@ -798,6 +804,7 @@ class NodeWrapper implements Node
         $em = $this->getManager()->getEntityManager();
         $newLeft = $node->getLeftValue() + 1;
         $newRight = $node->getLeftValue() + 2;
+        $newDeep = $node->getDeepValue() + 1;
         $newRoot = $this->hasManyRoots() ? $node->getRootValue() : null;
 
         // beginTransaction
@@ -805,7 +812,7 @@ class NodeWrapper implements Node
         try
         {
             $this->shiftRLRange($newLeft, 0, 2, $newRoot);
-            $this->insertNode($newLeft, $newRight, $newRoot);
+            $this->insertNode($newLeft, $newRight, $newDeep, $newRoot);
 
             $em->flush();
             $em->getConnection()->commit();
@@ -837,6 +844,7 @@ class NodeWrapper implements Node
         $em = $this->getManager()->getEntityManager();
         $newLeft = $node->getRightValue();
         $newRight = $node->getRightValue() + 1;
+        $newDeep = $node->getDeepValue() + 1;
         $newRoot = $this->hasManyRoots() ? $node->getRootValue() : null;
 
         // beginTransaction
@@ -844,7 +852,7 @@ class NodeWrapper implements Node
         try
         {
             $this->shiftRLRange($newLeft, 0, 2, $newRoot);
-            $this->insertNode($newLeft, $newRight, $newRoot);
+            $this->insertNode($newLeft, $newRight, $newDeep, $newRoot);
 
             $em->flush();
             $em->getConnection()->commit();
@@ -1076,7 +1084,8 @@ class NodeWrapper implements Node
                 ->andWhere("n.$rootField = ?6")
                 ->setParameter(6, $oldRoot);
             $qb->getQuery()->execute();
-            $this->getManager()->updateValues($oldLft, $oldRgt, $diff, $oldRoot, $newRoot);
+            //TODO: sistemare
+            $this->getManager()->updateValues($oldLft, $oldRgt, $diff, 0, $oldRoot, $newRoot);
 
             // Close gap in old tree
             $first = $oldRgt + 1;
@@ -1223,10 +1232,11 @@ class NodeWrapper implements Node
      * @param mixed $destRoot
      *
      */
-    protected function insertNode($destLeft, $destRight, $destRoot=null)
+    protected function insertNode($destLeft, $destRight, $deep, $destRoot=null)
     {
         $this->setLeftValue($destLeft);
         $this->setRightValue($destRight);
+        $this->setDeepValue($deep);
         if($this->hasManyRoots())
         {
             $this->setRootValue($destRoot);
@@ -1376,7 +1386,8 @@ class NodeWrapper implements Node
             ->andWhere("n.$rootField = ?6")
             ->setParameter(6, $oldRoot);
         $qb->getQuery()->execute();
-        $this->getManager()->updateValues($oldLft, $oldRgt, $diff, $oldRoot, $newRoot);
+        //TODO sistemare
+        $this->getManager()->updateValues($oldLft, $oldRgt, $diff, 0, $oldRoot, $newRoot);
 
         // Close gap in old tree
         $first = $oldRgt + 1;
@@ -1702,7 +1713,7 @@ class NodeWrapper implements Node
     	return $this->getNode()->getDeepValue();
     }
     
-    public function setDeepValue($d){
+    public function setDeepValue($deep){
     	$this->getNode()->setDeepValue($deep);
     }
 }
