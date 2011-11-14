@@ -18,6 +18,12 @@ solution is best suited for hierarchies that are much more frequently read
 than written to. And because of the nature of the web, this is the case for
 most web applications.
 
+## Deep flavor
+
+This fork introduce a new column that store the deep of the node. Useful to speedup many query, like
+retriving node children.
+
+N.B. : Multinode tree still not working. 
 
 ## Setting Up
 
@@ -51,6 +57,11 @@ Here's an example using annotation mapping:
          * @Column(type="integer")
          */
         private $rgt;
+        
+        /**
+         * @Column(type="integer")
+         */
+        private $deep;
 
         /**
          * @Column(type="string", length="16")
@@ -65,6 +76,9 @@ Here's an example using annotation mapping:
 
         public function getRightValue() { return $this->rgt; }
         public function setRightValue($rgt) { $this->rgt = $rgt; }
+        
+        public function getDeepValue() { return $this->deep; }
+        public function setDeepValue($deep) { $this->rgt = $deep; }
 
         public function getName() { return $this->name; }
         public function setName($name) { $this->name = $name; }
@@ -331,3 +345,4 @@ manager configuration:
 ## Conclusion
 
 NestedSet makes managing hierarchical data in Doctrine2 quick and easy.
+
