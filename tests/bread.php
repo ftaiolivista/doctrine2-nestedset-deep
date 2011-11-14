@@ -128,5 +128,5 @@ $newNode->insertAsLastChildOf($wrappers[1]);
 printTree($nsm);
 
 echo "\n\n ->moveAsFirstChildOf \n";
-$wrappers[1]->moveAsFirstChildOf($wrappers[4]);
+$wrappers[4]->moveAsFirstChildOf($wrappers[2]);
 printTree($nsm);

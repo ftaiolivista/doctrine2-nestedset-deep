@@ -773,6 +773,7 @@ class NodeWrapperTest extends DatabaseTest
         $this->assertEquals(6, $this->wrappers[2]->getRightValue(), '->moveAsFirstChildOf() updates parent node\'s right value');
         $this->assertEquals(7, $this->wrappers[3]->getLeftValue(), '->moveAsFirstChildOf() updates next node\'s left value');
         $this->assertEquals(8, $this->wrappers[3]->getRightValue(), '->moveAsFirstChildOf() updates next node\'s right value');
+        $this->assertEquals($this->wrappers[2]->getDeepValue()+1, $this->wrappers[4]->getDeepValue(), '->moveAsFirstChildOf() updates moved node\'s  brench deeps');
     }
 
 
