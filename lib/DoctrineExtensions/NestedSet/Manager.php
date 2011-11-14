@@ -407,7 +407,7 @@ class Manager
      * @param mixed $oldRoot the old root value of entities to act upon
      * @param mixed $newRoot the new root value to set (or null to not change root)
      */
-    public function updateValues($first, $last, $delta, $deepDelta=0, $oldRoot=null, $newRoot=null)
+    public function updateValues($first, $last, $delta=0, $deepDelta=0, $oldRoot=null, $newRoot=null)
     {
         if(!$this->wrappers)
         {

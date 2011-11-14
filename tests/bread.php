@@ -31,6 +31,12 @@ $conn = \Doctrine\DBAL\DriverManager::getConnection(array(
 ));
 
 function printTree($nsm){
+	$w = $GLOBALS['wrappers'];
+	echo "[\n";
+	foreach($w as $k=>$node){
+		echo " $k => ". $node .' ['.$node->getLeftValue().'|'.$node->getRightValue().'|'.$node->getDeepValue().']'. "\n";	
+	}
+	echo "]\n";
 	$tree = $nsm->fetchTreeAsArray(1);
 	foreach ($tree as $node) {
 		echo str_repeat('  ', $node->getLevel()) . $node .' ['.$node->getLeftValue().'|'.$node->getRightValue().'|'.$node->getDeepValue().']'. "\n";
@@ -119,4 +125,8 @@ printTree($nsm);
 echo "\n\n ->insertAsLastChildOf \n";
 $newNode = new NodeWrapper(new NodeMock(21, '1.1.3', null, null, 1, 0), $nsm);
 $newNode->insertAsLastChildOf($wrappers[1]);
+printTree($nsm);
+
+echo "\n\n ->moveAsFirstChildOf \n";
+$wrappers[1]->moveAsFirstChildOf($wrappers[4]);
 printTree($nsm);
