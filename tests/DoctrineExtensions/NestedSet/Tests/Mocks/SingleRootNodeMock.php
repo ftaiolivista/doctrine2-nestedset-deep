@@ -40,17 +40,23 @@ class SingleRootNodeMock implements Node
      * @Column(type="integer")
      */
     private $rgt;
+    
+    /**
+    * @Column(type="integer")
+    */
+    private $deep;
 
     /**
      * @Column(type="string", length="16")
      */
     private $name;
 
-    public function __construct($id, $name=null, $lft=null, $rgt=null)
+    public function __construct($id, $name=null, $lft=null, $rgt=null, $deep=null)
     {
         $this->id  = $id;
         $this->lft = $lft;
         $this->rgt = $rgt;
+        $this->deep = $deep;
         $this->name = $name;
     }
 
@@ -61,6 +67,13 @@ class SingleRootNodeMock implements Node
 
     public function getRightValue() { return $this->rgt; }
     public function setRightValue($rgt) { $this->rgt = $rgt; }
+    
+    public function getDeepValue() {
+    	return $this->deep;
+    }
+    public function setDeepValue($deep) {
+    	$this->deep = $deep;
+    }
 
     public function getRootValue() { return null; }
     public function setRootValue($root) { }

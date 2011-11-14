@@ -246,6 +246,7 @@ class Manager
 
         $node->setLeftValue(1);
         $node->setRightValue(2);
+        $node->setDeepValue(0);
 
         if($this->getConfiguration()->hasManyRoots())
         {
@@ -599,7 +600,7 @@ class Manager
 	/**
 	 * Adds a Query hint to a Query Object
 	 * @param \Doctrine\ORM\Query $query
-	 * @return \Doctrine\ORM\Query 
+	 * @return Doctrine\ORM\Query 
 	 */
 	public function addHintToQuery(\Doctrine\ORM\Query $query)
 	{

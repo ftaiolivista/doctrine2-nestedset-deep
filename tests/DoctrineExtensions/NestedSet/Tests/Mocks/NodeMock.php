@@ -41,6 +41,11 @@ class NodeMock implements MultipleRootNode
      * @Column(type="integer")
      */
     private $rgt;
+    
+    /**
+    * @Column(type="integer")
+    */
+    private $deep;
 
     /**
      * @Column(type="string", length="16")
@@ -59,11 +64,12 @@ class NodeMock implements MultipleRootNode
      */
     private $related;
 
-    public function __construct($id, $name=null, $lft=null, $rgt=null, $root=1)
+    public function __construct($id, $name=null, $lft=null, $rgt=null, $root=1, $deep=null)
     {
         $this->id  = $id;
         $this->lft = $lft;
         $this->rgt = $rgt;
+        $this->deep = $deep;
         $this->root = $root;
         $this->name = $name;
     }
@@ -75,6 +81,9 @@ class NodeMock implements MultipleRootNode
 
     public function getRightValue() { return $this->rgt; }
     public function setRightValue($rgt) { $this->rgt = $rgt; }
+    
+    public function getDeepValue() { return $this->deep; }    
+    public function setDeepValue($deep) { $this->deep = $deep; }
 
     public function getRootValue() { return $this->root; }
     public function setRootValue($root) { $this->root = $root; }

@@ -40,11 +40,11 @@ class SingleRootNodeWrapperTest extends DatabaseTest
         $this->nsm->getConfiguration()->setRootFieldName(null);
 
         $this->nodes = array(
-            new SingleRootNodeMock(1, '1', 1, 10),               # 0
-                new SingleRootNodeMock(2, '1.1', 2, 7),          # 1
-                    new SingleRootNodeMock(3, '1.1.1', 3, 4),    # 2
-                    new SingleRootNodeMock(4, '1.1.2', 5, 6),    # 3
-                new SingleRootNodeMock(5, '1.2', 8, 9),          # 4
+            new SingleRootNodeMock(1, '1', 1, 10, 0),               # 0
+                new SingleRootNodeMock(2, '1.1', 2, 7, 1),          # 1
+                    new SingleRootNodeMock(3, '1.1.1', 3, 4, 2),    # 2
+                    new SingleRootNodeMock(4, '1.1.2', 5, 6, 2),    # 3
+                new SingleRootNodeMock(5, '1.2', 8, 9, 1),          # 4
         );
 
         $this->wrappers = array();
@@ -193,7 +193,7 @@ class SingleRootNodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsPrevSiblingOf()
     {
-        $newNode = new NodeWrapper(new SingleRootNodeMock(21, '1.1.1(.5)'), $this->nsm);
+        $newNode = new NodeWrapper(new SingleRootNodeMock(21, '1.1.1(.5)', null, null, 1, 0), $this->nsm);
 
         $newNode->insertAsPrevSiblingOf($this->wrappers[3]);
         $this->assertEquals(5, $newNode->getLeftValue(), '->insertAsPrevSiblingOf() updates new node\'s left value');

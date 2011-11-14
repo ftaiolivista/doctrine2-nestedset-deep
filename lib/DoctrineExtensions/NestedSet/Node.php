@@ -27,7 +27,7 @@ namespace DoctrineExtensions\NestedSet;
  * For more information on NestedSets:
  *   http://dev.mysql.com/tech-resources/articles/hierarchical-data.html
  *
- * @author  Brandon Turner <bturner@bltweb.net>
+ * @author  Brandon Turner <bturner@bltweb.net>, Taioli Fabiano <ftaioli@vista.it>
  */
 interface Node
 {
@@ -73,4 +73,20 @@ interface Node
      * @param int $rgt
      */
     public function setRightValue($rgt);
+    
+    /**
+    * sets node deep
+    *
+    * @return int
+    */
+    public function getDeepValue();
+    
+    /**
+     * gets node deep
+     *
+     * @param int $rgt
+     */
+    public function setDeepValue($deep);
+    
+    
 }

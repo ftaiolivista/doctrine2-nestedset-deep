@@ -34,6 +34,7 @@ class Config
         $classname,
         $classMetadata,
         $leftFieldName,
+    	$deepFieldName,
         $rightFieldName,
         $rootFieldName,
         $baseQueryBuilder,
@@ -58,6 +59,7 @@ class Config
         $this->hasManyRoots = false;
         $this->setLeftFieldName('lft');
         $this->setRightFieldName('rgt');
+        $this->setDeepFieldName('deep');
         $this->setRootFieldName('root');
         $this->setHydrateLevel(true);
         $this->setHydrateOutlineNumber(true);
@@ -161,6 +163,29 @@ class Config
     public function getLeftFieldName()
     {
         return $this->leftFieldName;
+    }
+    
+    /**
+    * gets the left field name
+    *
+    * @return string
+    */
+    public function getDeepFieldName()
+    {
+    	return $this->deepFieldName;
+    }
+    
+    /**
+    * sets the left field name
+    *
+    * @param string $fieldName
+    *
+    * @return Config $this for fluent API
+    */
+    public function setDeepFieldName($fieldName)
+    {
+    	$this->deepFieldName = $fieldName;
+    	return $this;
     }
 
     /**

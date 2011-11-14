@@ -49,8 +49,6 @@ class NodeWrapper implements Node
     /** @var array of NodeWrappers */
     private $children = null;
 
-    private $level = null;
-
     private $outlineNumbers = null;
 
 
@@ -193,16 +191,29 @@ class NodeWrapper implements Node
             $qb->andWhere("$alias.".$this->getLeftFieldName()." > :lft1")
                 ->setParameter('lft1', $this->getLeftValue())
                 ->andWhere("$alias.".$this->getRightFieldName()." < :rgt1")
-                ->setParameter('rgt1', $this->getRightValue())
-                ->orderBy("$alias.".$this->getLeftFieldName(), "ASC");
+                ->setParameter('rgt1', $this->getRightValue());                
+            
+            if($depth == 1){
+            	$qb->andWhere("$alias.".$this->getDeepFieldName()." = :deep1")
+            		->setParameter('deep1', $this->getDeepValue()+1);
+            }
+
+            if($depth>1){
+            	$qb->andWhere("$alias.".$this->getDeepFieldName()." > :deep1")
+            	->setParameter('deep1', $this->getDeepValue()+1);
+            	$qb->andWhere("$alias.".$this->getDeepFieldName()." <= :deep2")
+            	->setParameter('deep2', $this->getDeepValue()+$depth);
+            }
+            
             if($this->hasManyRoots())
             {
                 $qb->andWhere("$alias.".$this->getRootFieldName()." = :root")
                     ->setParameter('root', $this->getRootValue());
             }
+            
+            $qb->orderBy("$alias.".$this->getLeftFieldName(), "ASC");
 
-            // TODO: Add depth support or self join support?
-			$q = $qb->getQuery();
+            $q = $qb->getQuery(); 
 			if ($this->getManager()->getConfiguration()->isQueryHintSet()){
 				$q = $this->getManager()->addHintToQuery($q);
 			}
@@ -294,6 +305,8 @@ class NodeWrapper implements Node
                 ->setParameter('lft1', $this->getLeftValue())
                 ->andWhere("$alias.".$this->getRightFieldName()." > :rgt1")
                 ->setParameter('rgt1', $this->getRightValue())
+                ->andWhere("$alias.".$this->getDeepFieldName()." < :deep1")
+                ->setParameter('deep1', $this->getDeepValue())
                 ->orderBy("$alias.".$this->getLeftFieldName(), "ASC");
             if($this->hasManyRoots())
             {
@@ -324,13 +337,8 @@ class NodeWrapper implements Node
      * @return int
      */
     public function getLevel()
-    {
-        if($this->level === null)
-        {
-            $this->level = count($this->getAncestors());
-        }
-
-        return $this->level;
+    {       
+        return $this->getDeepValue();
     }
 
 
@@ -1118,6 +1126,8 @@ class NodeWrapper implements Node
 
         $node->setLeftValue($this->getRightValue());
         $node->setRightValue($this->getRightValue() + 1);
+        $node->setDeepValue( $this->getDeepValue()+1 );
+        
         if($this->hasManyRoots())
         {
             $node->setRootValue($this->getRootValue());
@@ -1528,6 +1538,12 @@ class NodeWrapper implements Node
         return $this->manager;
     }
 
+    
+    protected function getDeepFieldName()
+    {
+    	return $this->getManager()->getConfiguration()->getDeepFieldName();
+    }
+    
 
     protected function getLeftFieldName()
     {
@@ -1680,5 +1696,13 @@ class NodeWrapper implements Node
     public function setRootValue($root)
     {
         return $this->getNode()->setRootValue($root);
+    }
+    
+    public function getDeepValue(){
+    	return $this->getNode()->getDeepValue();
+    }
+    
+    public function setDeepValue($d){
+    	$this->getNode()->setDeepValue($deep);
     }
 }

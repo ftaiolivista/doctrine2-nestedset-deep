@@ -23,7 +23,6 @@ use DoctrineExtensions\NestedSet\Tests\Mocks\ManagerMock;
 use DoctrineExtensions\NestedSet\NodeWrapper;
 use Doctrine\ORM\Mapping as ORM;
 
-
 class NodeWrapperTest extends DatabaseTest
 {
     protected
@@ -36,27 +35,27 @@ class NodeWrapperTest extends DatabaseTest
     protected function setUp()
     {
         $em = $this->getEntityManager();
+        $this->expectOutputString('');
         $this->loadSchema(array($em->getClassMetadata('DoctrineExtensions\NestedSet\Tests\Mocks\NodeMock')));
 
         $this->nsm = new ManagerMock($em, 'DoctrineExtensions\NestedSet\Tests\Mocks\NodeMock');
 
         $this->nodes = array(
-            new NodeMock(1, '1', 1, 10),               # 0
-                new NodeMock(2, '1.1', 2, 7),          # 1
-                    new NodeMock(3, '1.1.1', 3, 4),    # 2
-                    new NodeMock(4, '1.1.2', 5, 6),    # 3
-                new NodeMock(5, '1.2', 8, 9),          # 4
+            new NodeMock(1, '1', 1, 10, 1, 0),               # 0
+                new NodeMock(2, '1.1', 2, 7, 1, 1),          # 1
+                    new NodeMock(3, '1.1.1', 3, 4, 1, 2),    # 2
+                    new NodeMock(4, '1.1.2', 5, 6, 1, 2),    # 3
+                new NodeMock(5, '1.2', 8, 9, 1, 1),          # 4
         );
 
         $this->nodes2 = array(
-            new NodeMock(11, '1', 1, 12, 2),           # 0
-               new NodeMock(12, '1.1', 2, 7, 2),       # 1
-                   new NodeMock(13, '1.1.1', 3, 4, 2), # 2
-                   new NodeMock(14, '1.1.2', 5, 6, 2), # 3
-               new NodeMock(15, '1.2', 8, 9, 2),       # 4
-               new NodeMock(16, '1.3', 10, 11, 2),     # 5
+            new NodeMock(11, '1', 1, 12, 2, 0),           # 0
+               new NodeMock(12, '1.1', 2, 7, 2, 1),       # 1
+                   new NodeMock(13, '1.1.1', 3, 4, 2, 2), # 2
+                   new NodeMock(14, '1.1.2', 5, 6, 2, 2), # 3
+               new NodeMock(15, '1.2',  8,  9, 2, 1),     # 4
+               new NodeMock(16, '1.3', 10, 11, 2, 1),     # 5
         );
-
 
         $this->wrappers = array();
         foreach($this->nodes as $node)
@@ -281,7 +280,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testGetOutlineNumber()
     {
-        $this->assertEquals('1.1.1', $this->wrappers[2]->getOutlineNumber(), '->getOutlineNumber() works for 1.1.1');
+    	$this->assertEquals('1.1.1', $this->wrappers[2]->getOutlineNumber(), '->getOutlineNumber() works for 1.1.1');
         $this->assertEquals('1.1.2', $this->wrappers[3]->getOutlineNumber(), '->getOutlineNumber() works for 1.1.2');
         $this->assertEquals('', $this->wrappers[0]->getOutlineNumber('.',false), '->getOutlineNumber() works for root');
         $this->assertEquals('2', $this->wrappers[4]->getOutlineNumber('.',false), '->getOutlineNumber() works with includeNode=false');
@@ -496,7 +495,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsParentOf()
     {
-        $newWrapper = $this->nsm->wrapNode(new NodeMock(6, '1.1', 0, 0, 0));
+        $newWrapper = $this->nsm->wrapNode(new NodeMock(6, '1.1', 0, 0, 0, 0));
 
         $newWrapper->insertAsParentOf($this->wrappers[4]);
         $this->assertEquals(8, $newWrapper->getLeftValue(), '->insertAsParentOf() updates new node\'s left value');
@@ -548,7 +547,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsPrevSiblingOf()
     {
-        $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)'), $this->nsm);
+        $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)', null, null, 1, 0), $this->nsm);
 
         $newNode->insertAsPrevSiblingOf($this->wrappers[3]);
         $this->assertEquals(5, $newNode->getLeftValue(), '->insertAsPrevSiblingOf() updates new node\'s left value');
@@ -578,7 +577,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsNextSiblingOf()
     {
-        $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)'), $this->nsm);
+        $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)', null, null, 1, 0), $this->nsm);
 
         $newNode->insertAsNextSiblingOf($this->wrappers[2]);
         $this->assertEquals(5, $newNode->getLeftValue(), '->insertAsNextSiblingOf() updates new node\'s left value');
@@ -596,7 +595,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsNextSiblingOf_CantInsertSelf()
     {
-        $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)'), $this->nsm);
+        $newNode = new NodeWrapper(new NodeMock(21, '1.1.1(.5)', null, null, 1, 0), $this->nsm);
         $newNode->insertAsNextSiblingOf($newNode);
     }
 
@@ -608,7 +607,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsFirstChildOf()
     {
-        $newNode = new NodeWrapper(new NodeMock(21, '1.1.0'), $this->nsm);
+        $newNode = new NodeWrapper(new NodeMock(21, '1.1.0', null, null, 1, 0), $this->nsm);
 
         $newNode->insertAsFirstChildOf($this->wrappers[1]);
         $this->assertEquals(3, $newNode->getLeftValue(), '->insertAsFirstChildOf() updates new node\'s left value');
@@ -626,7 +625,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsFirstChildOf_CantInsertSelf()
     {
-        $newNode = new NodeWrapper(new NodeMock(21, '1.1.0'), $this->nsm);
+        $newNode = new NodeWrapper(new NodeMock(21, '1.1.0', null, null, 1, 0), $this->nsm);
         $newNode->insertAsFirstChildOf($newNode);
     }
 
@@ -639,7 +638,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsLastChildOf()
     {
-        $newNode = new NodeWrapper(new NodeMock(21, '1.1.3'), $this->nsm);
+        $newNode = new NodeWrapper(new NodeMock(21, '1.1.3', null, null, 1, 0), $this->nsm);
 
         $newNode->insertAsLastChildOf($this->wrappers[1]);
         $this->assertEquals(7, $newNode->getLeftValue(), '->insertAsLastChildOf() updates new node\'s left value');
@@ -657,7 +656,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testInsertAsLastChildOf_CantInsertSelf()
     {
-        $newNode = new NodeWrapper(new NodeMock(21, '1.1.3'), $this->nsm);
+        $newNode = new NodeWrapper(new NodeMock(21, '1.1.3', null, null, 1, 0), $this->nsm);
         $newNode->insertAsLastChildOf($newNode);
     }
 
@@ -895,7 +894,7 @@ class NodeWrapperTest extends DatabaseTest
      */
     public function testAddChild_NodeWrapper()
     {
-        $wrapper = $this->nsm->wrapNode(new NodeMock(6, '1.1.3', 0, 0, 0));
+        $wrapper = $this->nsm->wrapNode(new NodeMock(6, '1.1.3', 0, 0, 0, 0));
         $newWrapper = $this->wrappers[1]->addChild($wrapper);
         $this->assertSame($wrapper, $newWrapper, '->addChild() returns original wrapper when passing a NodeWrapper');
         $this->assertEquals(7, $newWrapper->getLeftValue(), '->addChild() updates new node\'s left value');

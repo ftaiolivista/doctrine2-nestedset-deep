@@ -53,20 +53,20 @@ class ManagerTest extends DatabaseTest
         $em = $this->getEntityManager();
 
         $this->nodes = array(
-            new NodeMock(1, '1', 1, 10),               # 0
-                new NodeMock(2, '1.1', 2, 7),          # 1
-                    new NodeMock(3, '1.1.1', 3, 4),    # 2
-                    new NodeMock(4, '1.1.2', 5, 6),    # 3
-                new NodeMock(5, '1.2', 8, 9),          # 4
+            new NodeMock(1, '1', 1, 10, 1, 0),               # 0
+                new NodeMock(2, '1.1', 2, 7, 1, 1),          # 1
+                    new NodeMock(3, '1.1.1', 3, 4, 1, 2),    # 2
+                    new NodeMock(4, '1.1.2', 5, 6, 1, 2),    # 3
+                new NodeMock(5, '1.2', 8, 9, 1, 1),          # 4
         );
 
         $this->nodes2 = array(
-            new NodeMock(11, '1', 1, 12, 2),           # 0
-               new NodeMock(12, '1.1', 2, 7, 2),       # 1
-                   new NodeMock(13, '1.1.1', 3, 4, 2), # 2
-                   new NodeMock(14, '1.1.2', 5, 6, 2), # 3
-               new NodeMock(15, '1.2', 8, 9, 2),       # 4
-               new NodeMock(16, '1.3', 10, 11, 2),     # 5
+            new NodeMock(11, '1', 1, 12, 2, 0),           # 0
+               new NodeMock(12, '1.1', 2, 7, 2, 1),       # 1
+                   new NodeMock(13, '1.1.1', 3, 4, 2, 2), # 2
+                   new NodeMock(14, '1.1.2', 5, 6, 2, 2), # 3
+               new NodeMock(15, '1.2', 8, 9, 2, 1),       # 4
+               new NodeMock(16, '1.3', 10, 11, 2, 1),     # 5
         );
 
 
@@ -248,7 +248,8 @@ class ManagerTest extends DatabaseTest
         $root_descendants = $this->readAttribute($root, 'descendants');
 
         $this->assertEquals($nodes[1]->getId(), $root->getId(), '->fetchBranch() start id is correct');
-        $this->assertAttributeEquals(1, 'level', $root, '->fetchBranch() start level is correct');
+        $this->assertEquals(1, $root->getLevel(), '->fetchBranch() start id is correct');
+
         $this->assertAttributeEquals(array(1,1), 'outlineNumbers', $root, '->fetchBranch() start outlineNumbers is correct');
         $this->assertNull($root_parent, '->fetchBranch() start parent is null');
         $this->assertEquals(
@@ -466,9 +467,9 @@ class ManagerTest extends DatabaseTest
     public function testUpdateLeftValues()
     {
         $wrappers = array(
-            $this->nsm->wrapNode(new NodeMock(1, '1', 1, 6)),
-            $this->nsm->wrapNode(new NodeMock(2, '1.1', 2, 3)),
-            $this->nsm->wrapNode(new NodeMock(3, '1.2', 4, 5)),
+            $this->nsm->wrapNode(new NodeMock(1, '1', 1, 6, 1, 0)),
+            $this->nsm->wrapNode(new NodeMock(2, '1.1', 2, 3, 1, 0)),
+            $this->nsm->wrapNode(new NodeMock(3, '1.2', 4, 5, 1, 0)),
         );
 
         $this->nsm->updateLeftValues(2, 0, 2, 1);
