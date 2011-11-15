@@ -1365,6 +1365,8 @@ class NodeWrapper implements Node
 	 * Accomplishes moving of nodes between different trees.
 	 * Used by the move* methods if the root values of the two nodes are
 	 * different.
+	 * 
+	 * TODO : Update Deeps
 	 *
 	 * NOTE: This method does not wrap its database queries in a transaction.
 	 * This should be done before invoking this code.
