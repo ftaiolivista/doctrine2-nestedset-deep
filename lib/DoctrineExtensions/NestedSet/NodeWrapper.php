@@ -263,6 +263,8 @@ class NodeWrapper implements Node
 			->setParameter('lft1', $this->getLeftValue())
 			->andWhere("$alias.".$this->getRightFieldName()." > :rgt1")
 			->setParameter('rgt1', $this->getRightValue())
+			->andWhere("$alias.".$this->getDeepFieldName()." = :deep1")
+			->setParameter('deep1', $this->getDeepValue()-1)
 			->orderBy("$alias.".$this->getRightFieldName(), "ASC")
 			->setMaxResults(1);
 			if($this->hasManyRoots())
